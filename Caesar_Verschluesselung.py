@@ -35,14 +35,14 @@ Index_Crypto = {
 
 
 secretnumber = 3
-output_path = r"C:\MaHo\Python_Output"
+output_path = r"C:\MaHo\Python\Python_Output"
 
 
 def file_writer(cypher):
     with open(f'{output_path}\\'
-              f'Cypher-{datetime.datetime.today().strftime("%H-%M-%S-%Y%m%d.txt")}', mode='w+') as cypher_file:
+              f'Cypher-{datetime.datetime.today().strftime("%H-%M-%S_%Y-%m-%d.txt")}', mode='w+') as cypher_file:
         cypher_file.write('-' * 45 + '\n')
-        cypher_file.write('Zeitstempel ' + datetime.datetime.today().strftime('%A, den %d %B %Y') + '\n')
+        cypher_file.write('Zeitstempel ' + datetime.datetime.today().strftime('%A, the %d %B %Y') + '\n')
         cypher_file.write('Eintrag vorgenommen: ' + datetime.datetime.today().strftime('%X') + '\n')
         cypher_file.write('-' * 45 + '\n')
         for arg in cypher:
@@ -68,6 +68,14 @@ def create_listnum(msg_list: list):
             list_numbers.append(Index_Crypto[elm])
         elif elm == ' ':
             list_numbers.append(' ')
+        elif elm == '.':
+            list_numbers.append('.')
+        elif elm == ',':
+            list_numbers.append(',')
+        elif elm == '!':
+            list_numbers.append('!')
+        elif elm == '?':
+            list_numbers.append('?')
     return list_numbers
 
 
@@ -84,6 +92,14 @@ def encode_string(encod_list: list):
             list_cypher.append(get_key(i))
         elif i == ' ':
             list_cypher.append(' ')
+        elif i == '.':
+            list_cypher.append('.')
+        elif i == ',':
+            list_cypher.append(',')
+        elif i == '!':
+            list_cypher.append('!')
+        elif i == '?':
+            list_cypher.append('?')
     cypher_msg = ''.join(list_cypher)
     return cypher_msg
 
@@ -102,6 +118,14 @@ class Encoder:
                 encod_list.append(3)
             elif num == ' ':
                 encod_list.append(' ')
+            elif num == '.':
+                encod_list.append('.')
+            elif num == ',':
+                encod_list.append(',')
+            elif num == '!':
+                encod_list.append('!')
+            elif num == '?':
+                encod_list.append('?')
             else:
                 num += secretnumber
                 encod_list.append(num)
@@ -122,6 +146,14 @@ class Decoder:
                 encod_list.append(29)
             elif num == ' ':
                 encod_list.append(' ')
+            elif num == '.':
+                encod_list.append('.')
+            elif num == ',':
+                encod_list.append(',')
+            elif num == '!':
+                encod_list.append('!')
+            elif num == '?':
+                encod_list.append('?')
             else:
                 num -= secretnumber
                 encod_list.append(num)
@@ -130,12 +162,12 @@ class Decoder:
 
 def coding(*args):
     msg = create_listmsg(get_msg())
-    listofmsg = create_listnum(msg)
-    if task == 'E' or task == 'e':
-        en_cyper = encode_string(encoding(listofmsg))
+    list_of_msg = create_listnum(msg)
+    if args == 'E' or args == 'e':
+        en_cyper = encode_string(encoding(list_of_msg))
         return en_cyper
-    elif task == 'D' or task == 'd':
-        en_cyper = encode_string(decoding(listofmsg))
+    elif args == 'D' or args == 'd':
+        en_cyper = encode_string(decoding(list_of_msg))
         return en_cyper
     else:
         sys.exit()
@@ -151,9 +183,15 @@ def decoding(list_of_message):
     return list_of_decoding
 
 
-if __name__ == '__main__':
-    task = str(input(f'Was soll gemacht werden? \n'
+def caesar_verschluesselung():
+    task = str(input(f'Cäsar-Verschlüsselung \n'
                      f'E - Verschlüsseln \n'
                      f'D - Entschlüsseln \n'
                      f'Hier eintragen: '))
-    file_writer(coding())
+    file_writer(coding(task))
+
+
+
+
+if __name__ == '__main__':
+    caesar_verschluesselung()
