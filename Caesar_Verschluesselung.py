@@ -40,7 +40,7 @@ output_path = r"C:\MaHo\Python\Python_Output"
 
 def file_writer(cypher):
     with open(f'{output_path}\\'
-              f'Cypher-{datetime.datetime.today().strftime("%H-%M-%S_%Y-%m-%d.txt")}', mode='w+') as cypher_file:
+              f'Cypher-CaeVer-{datetime.datetime.today().strftime("%H-%M-%S_%Y-%m-%d.txt")}', mode='w+') as cypher_file:
         cypher_file.write('-' * 45 + '\n')
         cypher_file.write('Zeitstempel ' + datetime.datetime.today().strftime('%A, the %d %B %Y') + '\n')
         cypher_file.write('Eintrag vorgenommen: ' + datetime.datetime.today().strftime('%X') + '\n')
