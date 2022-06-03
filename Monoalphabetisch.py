@@ -1,8 +1,8 @@
+# -*- coding: utf-8 -*-
 import json
 import pickle
 import datetime
 import secrets
-
 
 alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ'
 output_path = r"C:\MaHo\Python\Python_Output"
@@ -34,24 +34,30 @@ def generate_dict(alphabet_list: list, random_list: list):
 class FileWriter:
 
     @staticmethod
-    def write_message_file(cypher):
+    def write_message_file(cypher_key_txt: str):
         with open(f'{output_path}\\'
-                  f'Cypher-CaeVer-{datetime.datetime.today().strftime("%H-%M-%S_%Y-%m-%d.txt")}',
-                  mode='w+') as cypher_file:
-            cypher_file.write('-' * 45 + '\n')
-            cypher_file.write('Zeitstempel ' + datetime.datetime.today().strftime('%A, the %d %B %Y') +
-                              datetime.datetime.today().strftime('%X'))
-            cypher_file.write('-' * 45 + '\n')
-            for arg in cypher:
-                cypher_file.writelines(arg)
+                  f'Cypher-Mono-{datetime.datetime.today().strftime("%H-%M-%S_%Y-%m-%d.txt")}',
+                  mode='w+') as cypher_file_txt:
+            cypher_file_txt.write('-' * 51 + '\n')
+            cypher_file_txt.write('Zeitstempel ' + datetime.datetime.today().strftime('%A, the %d %B %Y') + ' - ' +
+                                  datetime.datetime.today().strftime('%X') + '\n')
+            cypher_file_txt.write('-' * 51 + '\n')
+            for arg in cypher_key_txt:
+                cypher_file_txt.writelines(arg)
 
     @staticmethod
-    def write_pickle_file():
-        pass
+    def write_pickle_file(cypher_key_pickle: dict):
+        with open(f'{output_path}\\'
+                  f'Cypher-Mono-{datetime.datetime.today().strftime("%H-%M-%S_%Y-%m-%d.pickle")}',
+                  mode='wb') as cypher_file_pickle:
+            cypher_file_pickle.write(pickle.dumps(cypher_key_pickle))
 
     @staticmethod
-    def write_json_file():
-        pass
+    def write_json_file(cypher_key_json: dict):
+        with open(f'{output_path}\\'
+                  f'Cypher-Mono-{datetime.datetime.today().strftime("%H-%M-%S_%Y-%m-%d.json")}',
+                  mode='w+') as cypher_file_json:
+            cypher_file_json.write(json.dumps(cypher_key_json))
 
 
 def get_message():
@@ -70,10 +76,26 @@ def encode_message(message_list: list, cypher_dict: dict):
     encrypted_list = []
     for elm in message_list:
         if elm in cypher_dict.keys():
-            encrypted_list.append(cypher_dict.)
-    pass
+            encrypted_list.append(cypher_dict[elm])
+        elif elm == ' ':
+            encrypted_list.append(' ')
+    encrypted_string = ''.join(encrypted_list)
+    return encrypted_string
+
+
+def load_pickle_file():
+    m = open('test.pickle', 'rb')
+    pickel = pickle.load(m)
+    m.close()
+    return pickel
 
 
 if __name__ == '__main__':
+    nachricht = create_message_list(get_message())
     cyphe_dict = generate_dict(generate_list(alphabet), generate_random_list(generate_list(alphabet)))
-    print(cyphe_dict)
+    FileWriter.write_json_file(cyphe_dict)
+    FileWriter.write_pickle_file(cyphe_dict)
+    code = encode_message(nachricht, cyphe_dict)
+    FileWriter.write_message_file(code)
+    print(load_pickle_file())
+
