@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 import pickle
 import datetime
@@ -36,26 +35,22 @@ class FileWriter:
     @staticmethod
     def write_message_file(cypher_key_txt: str):
         with open(f'{output_path}\\'
-                  f'Cypher-Mono-{datetime.datetime.today().strftime("%H-%M-%S_%Y-%m-%d.txt")}',
+                  f'Cypher-Mono-{datetime.datetime.today().strftime("%H%M%S-%Y%m%d.txt")}',
                   mode='w+') as cypher_file_txt:
-            cypher_file_txt.write('-' * 51 + '\n')
-            cypher_file_txt.write('Zeitstempel ' + datetime.datetime.today().strftime('%A, the %d %B %Y') + ' - ' +
-                                  datetime.datetime.today().strftime('%X') + '\n')
-            cypher_file_txt.write('-' * 51 + '\n')
             for arg in cypher_key_txt:
                 cypher_file_txt.writelines(arg)
 
     @staticmethod
     def write_pickle_file(cypher_key_pickle: dict):
         with open(f'{output_path}\\'
-                  f'Cypher-Mono-{datetime.datetime.today().strftime("%H-%M-%S_%Y-%m-%d.pickle")}',
-                  mode='wb') as cypher_file_pickle:
-            cypher_file_pickle.write(pickle.dumps(cypher_key_pickle))
+                  f'Cypher-Mono-{datetime.datetime.today().strftime("%H%M%S-%Y%m%d.pickle")}', 'wb')\
+                as cypher_file_pickle:
+            pickle.dump(cypher_key_pickle, cypher_file_pickle)
 
     @staticmethod
     def write_json_file(cypher_key_json: dict):
         with open(f'{output_path}\\'
-                  f'Cypher-Mono-{datetime.datetime.today().strftime("%H-%M-%S_%Y-%m-%d.json")}',
+                  f'Cypher-Mono-{datetime.datetime.today().strftime("%H%M%S-%Y%m%d.json")}',
                   mode='w+') as cypher_file_json:
             cypher_file_json.write(json.dumps(cypher_key_json))
 
@@ -84,10 +79,11 @@ def encode_message(message_list: list, cypher_dict: dict):
 
 
 def load_pickle_file():
-    m = open('test.pickle', 'rb')
-    pickel = pickle.load(m)
-    m.close()
-    return pickel
+    with open(f'{output_path}\\'
+              f'Cypher-Mono-211839-20220603.pickle', 'rb') \
+            as cypher_file_pickle:
+        m = pickle.load(cypher_file_pickle)
+        print(m)
 
 
 if __name__ == '__main__':
@@ -97,5 +93,4 @@ if __name__ == '__main__':
     FileWriter.write_pickle_file(cyphe_dict)
     code = encode_message(nachricht, cyphe_dict)
     FileWriter.write_message_file(code)
-    print(load_pickle_file())
-
+    load_pickle_file()
