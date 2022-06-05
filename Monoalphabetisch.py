@@ -55,6 +55,22 @@ class FileWriter:
             cypher_file_json.write(json.dumps(cypher_key_json))
 
 
+class FileLoader:
+
+    @staticmethod
+    def load_txt_file(filename):
+        with open(f'{output_path}\\'
+                  f'{filename}.txt', 'r') as cypher_file_pickle:
+            cypher_file_pickle.readlines()
+            return
+
+    @staticmethod
+    def load_pickle_file(filename):
+        with open(f'{output_path}\\'
+                  f'{filename}.pickle', 'rb') as cypher_file_pickle:
+            pickle_dict = pickle.load(cypher_file_pickle)
+
+
 def get_message():
     message = str(input('Nachricht hier eintragen: '))
     return message
@@ -78,14 +94,6 @@ def encode_message(message_list: list, cypher_dict: dict):
     return encrypted_string
 
 
-def load_pickle_file():
-    with open(f'{output_path}\\'
-              f'Cypher-Mono-211839-20220603.pickle', 'rb') \
-            as cypher_file_pickle:
-        m = pickle.load(cypher_file_pickle)
-        print(m)
-
-
 if __name__ == '__main__':
     nachricht = create_message_list(get_message())
     cyphe_dict = generate_dict(generate_list(alphabet), generate_random_list(generate_list(alphabet)))
@@ -93,4 +101,3 @@ if __name__ == '__main__':
     FileWriter.write_pickle_file(cyphe_dict)
     code = encode_message(nachricht, cyphe_dict)
     FileWriter.write_message_file(code)
-    load_pickle_file()
